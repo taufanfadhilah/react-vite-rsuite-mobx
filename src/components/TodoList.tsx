@@ -13,7 +13,9 @@ const Item = ({ todo }: { todo: TodoInterface }) => (
         style={{ textDecoration: todo.isDone ? "line-through" : "none" }}
       >
         <h4>{todo.title}</h4>
-        <small style={{ color: "#8e8e93" }}>{todo.deadline.toString()}</small>
+        <small className="text-gray-secondary">
+          {todo.deadline.toString()}
+        </small>
         <p>{todo.description}</p>
         <p>{todo.isDone}</p>
       </FlexboxGrid.Item>

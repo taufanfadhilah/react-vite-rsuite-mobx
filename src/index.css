@@ -10,6 +10,6 @@
   margin-right: 8px;
 }
 
-.hidden {
-  display: none;
+.text-gray-secondary {
+  color: #8e8e93;
 }
