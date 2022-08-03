@@ -7,6 +7,7 @@ const Item = () => (
     <FlexboxGrid justify="space-between">
       <FlexboxGrid.Item colspan={16}>
         <h4>Item 1</h4>
+        <small style={{ color: "#8e8e93" }}>Monday, August 1st 2022</small>
         <p>
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusamus
           deserunt molestiae commodi quae debitis cum possimus, omnis nobis
