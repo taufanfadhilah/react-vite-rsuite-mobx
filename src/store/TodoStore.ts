@@ -8,6 +8,7 @@ class TodoStore {
     makeObservable(this, {
       todos: observable,
       addTodo: action,
+      removeTodo: action,
     });
   }
 
@@ -15,8 +16,20 @@ class TodoStore {
     const newTodo: TodoInterface = {
       ...todo,
       id: new Date().getTime(),
+      isDone: false,
     };
     this.todos.push(newTodo);
+  }
+
+  removeTodo(id: number) {
+    this.todos = this.todos.filter((todo: TodoInterface) => todo.id !== id);
+  }
+
+  markAsDone(id: number) {
+    const todoIndex = this.todos.findIndex(
+      (todo: TodoInterface) => todo.id === id
+    );
+    this.todos[todoIndex].isDone = true;
   }
 }
 

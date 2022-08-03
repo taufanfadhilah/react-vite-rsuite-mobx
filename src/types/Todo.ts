@@ -6,4 +6,5 @@ export interface TodoInputInterface {
 
 export interface TodoInterface extends TodoInputInterface {
   id: number;
+  isDone: boolean;
 }
