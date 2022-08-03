@@ -1,6 +1,14 @@
 import React, { useRef, useState } from "react";
 import { TodoInputInterface } from "../types/Todo";
-import { Panel, Form, Input, DatePicker, ButtonToolbar, Button } from "rsuite";
+import {
+  Panel,
+  Form,
+  Schema,
+  Input,
+  DatePicker,
+  ButtonToolbar,
+  Button,
+} from "rsuite";
 import { todoStore } from "../store";
 
 const Textarea = React.forwardRef((props, ref: any) => (
@@ -13,10 +21,21 @@ export default function InputForm() {
     deadline: new Date(),
     description: "",
   });
-  const formRef = useRef<any>(null);
+  const formRef = useRef(null);
 
-  const handleSubmit = () => {
-    todoStore.addTodo(formValue as TodoInputInterface);
+  const model = Schema.Model({
+    title: Schema.Types.StringType().isRequired("Please enter the title"),
+    deadline: Schema.Types.DateType().min(
+      new Date(),
+      "You can not select past date"
+    ),
+  });
+
+  const handleSubmit = (status: boolean) => {
+    if (status) {
+      todoStore.addTodo(formValue as TodoInputInterface);
+      handleReset();
+    }
   };
 
   const handleReset = () => {
@@ -32,6 +51,7 @@ export default function InputForm() {
         formValue={formValue}
         onChange={(value: any) => setFormValue(value)}
         onReset={handleReset}
+        model={model}
       >
         <Form.Group controlId="title">
           <Form.ControlLabel>Title</Form.ControlLabel>
@@ -40,15 +60,7 @@ export default function InputForm() {
         </Form.Group>
         <Form.Group controlId="deadline">
           <Form.ControlLabel>Deadline Date</Form.ControlLabel>
-          <DatePicker
-            oneTap
-            block
-            name="deadline"
-            onSelect={(date: Date) =>
-              setFormValue({ ...formValue, deadline: date })
-            }
-            value={formValue.deadline}
-          />
+          <Form.Control name="deadline" accepter={DatePicker} oneTap block />
         </Form.Group>
         <Form.Group controlId="description">
           <Form.ControlLabel>Description</Form.ControlLabel>
