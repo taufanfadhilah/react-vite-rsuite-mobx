@@ -9,26 +9,21 @@ const Item = ({ todo }: { todo: TodoInterface }) => (
   <List.Item>
     <FlexboxGrid justify="space-between">
       <FlexboxGrid.Item
-        colspan={16}
-        style={{ textDecoration: todo.isDone ? "line-through" : "none" }}
+        colspan={14}
+        className={`${todo.isDone && "line-through"}`}
       >
         <h4>{todo.title}</h4>
-        <small className="text-gray-secondary">
-          {todo.deadline.toString()}
-        </small>
+        <small className="text-gray-400">{todo.deadline.toString()}</small>
         <p>{todo.description}</p>
         <p>{todo.isDone}</p>
       </FlexboxGrid.Item>
-      <FlexboxGrid.Item
-        as={Col}
-        colspan={8}
-        style={{ textAlign: "right", padding: 24 }}
-      >
-        <ButtonGroup vertical size="sm">
+      <FlexboxGrid.Item as={Col} colspan={10} className="pt-8">
+        <div className="flex flex-row">
           <Button
             color="green"
             appearance="primary"
             onClick={() => todoStore.markAsDone(todo.id)}
+            className="mr-2"
           >
             <CheckOutlineIcon className="mr-2" />
             Mark as Done
@@ -41,7 +36,7 @@ const Item = ({ todo }: { todo: TodoInterface }) => (
             <TrashIcon className="mr-2" />
             Remove
           </Button>
-        </ButtonGroup>
+        </div>
       </FlexboxGrid.Item>
     </FlexboxGrid>
   </List.Item>
