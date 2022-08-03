@@ -1,19 +1,19 @@
 import { Panel, List, FlexboxGrid, Col, ButtonGroup, Button } from "rsuite";
+import { observer } from "mobx-react-lite";
+import { useStore } from "../store";
+import { TodoInterface } from "../types/Todo";
 import TrashIcon from "@rsuite/icons/Trash";
 import CheckOutlineIcon from "@rsuite/icons/CheckOutline";
 
-const Item = () => (
+const Item = (props: { todo: TodoInterface }) => (
   <List.Item>
     <FlexboxGrid justify="space-between">
       <FlexboxGrid.Item colspan={16}>
-        <h4>Item 1</h4>
-        <small style={{ color: "#8e8e93" }}>Monday, August 1st 2022</small>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusamus
-          deserunt molestiae commodi quae debitis cum possimus, omnis nobis
-          soluta porro molestias odio dignissimos ipsam quia. Consequuntur
-          asperiores natus eaque nihil?
-        </p>
+        <h4>{props.todo.title}</h4>
+        <small style={{ color: "#8e8e93" }}>
+          {props.todo.deadline.toString()}
+        </small>
+        <p>{props.todo.description}</p>
       </FlexboxGrid.Item>
       <FlexboxGrid.Item
         as={Col}
@@ -35,14 +35,18 @@ const Item = () => (
   </List.Item>
 );
 
-export default function TodoList() {
+const TodoList = () => {
+  const { todoStore } = useStore();
+
   return (
     <Panel header="Todo List" bordered>
       <List>
-        {[1, 2, 3].map((val) => (
-          <Item key={val} />
+        {todoStore.todos.map((todo: TodoInterface) => (
+          <Item key={todo.title} todo={todo} />
         ))}
       </List>
     </Panel>
   );
-}
+};
+
+export default observer(TodoList);

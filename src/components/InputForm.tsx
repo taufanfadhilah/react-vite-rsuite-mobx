@@ -1,4 +1,6 @@
 import React, { useRef, useState } from "react";
+import { useStore } from "../store";
+import { TodoInterface } from "../types/Todo";
 import { Panel, Form, Input, DatePicker, ButtonToolbar, Button } from "rsuite";
 
 const Textarea = React.forwardRef((props, ref: any) => (
@@ -6,15 +8,16 @@ const Textarea = React.forwardRef((props, ref: any) => (
 ));
 
 export default function InputForm() {
+  const { todoStore } = useStore();
   const [formValue, setFormValue] = useState({
     title: "",
-    deadline: "",
+    deadline: new Date(),
     description: "",
   });
   const formRef = useRef<any>(null);
 
-  const handleSubmit = (status: boolean) => {
-    console.log({ formValue, status });
+  const handleSubmit = () => {
+    todoStore.addTodo(formValue as TodoInterface);
   };
 
   return (
@@ -38,7 +41,7 @@ export default function InputForm() {
             block
             name="deadline"
             onSelect={(date: Date) =>
-              setFormValue({ ...formValue, deadline: date.toLocaleString() })
+              setFormValue({ ...formValue, deadline: date })
             }
           />
         </Form.Group>
