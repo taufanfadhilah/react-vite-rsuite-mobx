@@ -19,6 +19,10 @@ export default function InputForm() {
     todoStore.addTodo(formValue as TodoInputInterface);
   };
 
+  const handleReset = () => {
+    setFormValue({ title: "", deadline: new Date(), description: "" });
+  };
+
   return (
     <Panel header="Add Todo" bordered>
       <Form
@@ -27,6 +31,7 @@ export default function InputForm() {
         onSubmit={handleSubmit}
         formValue={formValue}
         onChange={(value: any) => setFormValue(value)}
+        onReset={handleReset}
       >
         <Form.Group controlId="title">
           <Form.ControlLabel>Title</Form.ControlLabel>
@@ -42,6 +47,7 @@ export default function InputForm() {
             onSelect={(date: Date) =>
               setFormValue({ ...formValue, deadline: date })
             }
+            value={formValue.deadline}
           />
         </Form.Group>
         <Form.Group controlId="description">
