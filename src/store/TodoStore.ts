@@ -1,5 +1,5 @@
 import { makeObservable, observable, action } from "mobx";
-import { TodoInterface } from "../types/Todo";
+import { TodoInterface, TodoInputInterface } from "../types/Todo";
 
 class TodoStore {
   todos: TodoInterface[] = [];
@@ -11,8 +11,12 @@ class TodoStore {
     });
   }
 
-  addTodo(todo: TodoInterface) {
-    this.todos.push(todo);
+  addTodo(todo: TodoInputInterface) {
+    const newTodo: TodoInterface = {
+      ...todo,
+      id: new Date().getTime(),
+    };
+    this.todos.push(newTodo);
   }
 }
 

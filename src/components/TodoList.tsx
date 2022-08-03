@@ -1,6 +1,6 @@
 import { Panel, List, FlexboxGrid, Col, ButtonGroup, Button } from "rsuite";
 import { observer } from "mobx-react-lite";
-import { useStore } from "../store";
+import { todoStore } from "../store";
 import { TodoInterface } from "../types/Todo";
 import TrashIcon from "@rsuite/icons/Trash";
 import CheckOutlineIcon from "@rsuite/icons/CheckOutline";
@@ -36,13 +36,11 @@ const Item = (props: { todo: TodoInterface }) => (
 );
 
 const TodoList = () => {
-  const { todoStore } = useStore();
-
   return (
     <Panel header="Todo List" bordered>
       <List>
         {todoStore.todos.map((todo: TodoInterface) => (
-          <Item key={todo.title} todo={todo} />
+          <Item key={todo.id} todo={todo} />
         ))}
       </List>
     </Panel>

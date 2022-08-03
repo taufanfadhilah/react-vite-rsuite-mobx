@@ -1,14 +1,13 @@
 import React, { useRef, useState } from "react";
-import { useStore } from "../store";
-import { TodoInterface } from "../types/Todo";
+import { TodoInputInterface } from "../types/Todo";
 import { Panel, Form, Input, DatePicker, ButtonToolbar, Button } from "rsuite";
+import { todoStore } from "../store";
 
 const Textarea = React.forwardRef((props, ref: any) => (
   <Input {...props} as="textarea" rows={3} ref={ref} />
 ));
 
 export default function InputForm() {
-  const { todoStore } = useStore();
   const [formValue, setFormValue] = useState({
     title: "",
     deadline: new Date(),
@@ -17,7 +16,7 @@ export default function InputForm() {
   const formRef = useRef<any>(null);
 
   const handleSubmit = () => {
-    todoStore.addTodo(formValue as TodoInterface);
+    todoStore.addTodo(formValue as TodoInputInterface);
   };
 
   return (
