@@ -23,7 +23,7 @@ const Item = ({ todo }: { todo: TodoInterface }) => (
             color="green"
             appearance="primary"
             onClick={() => todoStore.markAsDone(todo.id)}
-            className="mr-2"
+            className={`${todo.isDone && "invisible"} mr-2`}
           >
             <CheckOutlineIcon className="mr-2" />
             Mark as Done
