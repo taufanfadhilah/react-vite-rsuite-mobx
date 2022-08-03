@@ -1,11 +1,7 @@
-.mt-20 {
-  margin-top: 80px;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-.mb-8 {
-  margin-bottom: 32px;
-}
-
-.mr-2 {
-  margin-right: 8px;
+.text-gray-secondary {
+  color: #8e8e93;
 }

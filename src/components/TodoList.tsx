@@ -1,48 +1,55 @@
 import { Panel, List, FlexboxGrid, Col, ButtonGroup, Button } from "rsuite";
 import { observer } from "mobx-react-lite";
-import { useStore } from "../store";
+import { todoStore } from "../store";
 import { TodoInterface } from "../types/Todo";
 import TrashIcon from "@rsuite/icons/Trash";
 import CheckOutlineIcon from "@rsuite/icons/CheckOutline";
 
-const Item = (props: { todo: TodoInterface }) => (
+const Item = ({ todo }: { todo: TodoInterface }) => (
   <List.Item>
     <FlexboxGrid justify="space-between">
-      <FlexboxGrid.Item colspan={16}>
-        <h4>{props.todo.title}</h4>
-        <small style={{ color: "#8e8e93" }}>
-          {props.todo.deadline.toString()}
-        </small>
-        <p>{props.todo.description}</p>
-      </FlexboxGrid.Item>
       <FlexboxGrid.Item
-        as={Col}
-        colspan={8}
-        style={{ textAlign: "right", padding: 24 }}
+        colspan={14}
+        className={`${todo.isDone && "line-through"}`}
       >
-        <ButtonGroup vertical size="sm">
-          <Button color="green" appearance="primary">
+        <h4>{todo.title}</h4>
+        <small className="text-gray-400">{todo.deadline.toString()}</small>
+        <p>{todo.description}</p>
+        <p>{todo.isDone}</p>
+      </FlexboxGrid.Item>
+      <FlexboxGrid.Item as={Col} colspan={10} className="pt-8">
+        <div className="flex flex-row">
+          <Button
+            color="green"
+            appearance="primary"
+            onClick={() => todoStore.markAsDone(todo.id)}
+            className={`${todo.isDone && "invisible"} mr-2`}
+          >
             <CheckOutlineIcon className="mr-2" />
             Mark as Done
           </Button>
-          <Button color="red" appearance="primary">
+          <Button
+            color="red"
+            appearance="primary"
+            onClick={() => todoStore.removeTodo(todo.id)}
+          >
             <TrashIcon className="mr-2" />
             Remove
           </Button>
-        </ButtonGroup>
+        </div>
       </FlexboxGrid.Item>
     </FlexboxGrid>
   </List.Item>
 );
 
-const TodoList = () => {
-  const { todoStore } = useStore();
+const ItemObserver = observer(Item);
 
+const TodoList = () => {
   return (
     <Panel header="Todo List" bordered>
       <List>
         {todoStore.todos.map((todo: TodoInterface) => (
-          <Item key={todo.title} todo={todo} />
+          <ItemObserver key={todo.id} todo={todo} />
         ))}
       </List>
     </Panel>

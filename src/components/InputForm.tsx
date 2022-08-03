@@ -1,23 +1,45 @@
 import React, { useRef, useState } from "react";
-import { useStore } from "../store";
-import { TodoInterface } from "../types/Todo";
-import { Panel, Form, Input, DatePicker, ButtonToolbar, Button } from "rsuite";
+import { TodoInputInterface } from "../types/Todo";
+import {
+  Panel,
+  Form,
+  Schema,
+  Input,
+  DatePicker,
+  ButtonToolbar,
+  Button,
+} from "rsuite";
+import { todoStore } from "../store";
 
 const Textarea = React.forwardRef((props, ref: any) => (
   <Input {...props} as="textarea" rows={3} ref={ref} />
 ));
 
 export default function InputForm() {
-  const { todoStore } = useStore();
   const [formValue, setFormValue] = useState({
     title: "",
     deadline: new Date(),
     description: "",
   });
-  const formRef = useRef<any>(null);
+  const formRef = useRef(null);
 
-  const handleSubmit = () => {
-    todoStore.addTodo(formValue as TodoInterface);
+  const model = Schema.Model({
+    title: Schema.Types.StringType().isRequired("Please enter the title"),
+    deadline: Schema.Types.DateType().min(
+      new Date(),
+      "You can not select past date"
+    ),
+  });
+
+  const handleSubmit = (status: boolean) => {
+    if (status) {
+      todoStore.addTodo(formValue as TodoInputInterface);
+      handleReset();
+    }
+  };
+
+  const handleReset = () => {
+    setFormValue({ title: "", deadline: new Date(), description: "" });
   };
 
   return (
@@ -28,6 +50,8 @@ export default function InputForm() {
         onSubmit={handleSubmit}
         formValue={formValue}
         onChange={(value: any) => setFormValue(value)}
+        onReset={handleReset}
+        model={model}
       >
         <Form.Group controlId="title">
           <Form.ControlLabel>Title</Form.ControlLabel>
@@ -36,14 +60,7 @@ export default function InputForm() {
         </Form.Group>
         <Form.Group controlId="deadline">
           <Form.ControlLabel>Deadline Date</Form.ControlLabel>
-          <DatePicker
-            oneTap
-            block
-            name="deadline"
-            onSelect={(date: Date) =>
-              setFormValue({ ...formValue, deadline: date })
-            }
-          />
+          <Form.Control name="deadline" accepter={DatePicker} oneTap block />
         </Form.Group>
         <Form.Group controlId="description">
           <Form.ControlLabel>Description</Form.ControlLabel>
